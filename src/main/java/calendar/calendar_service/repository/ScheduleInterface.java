@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface ScheduleInterface {
     ScheduleDto save(ScheduleDto scheduleDto);
-    Optional<ScheduleDto> add(String id);
-    Optional<ScheduleDto> delete(String id);
+    Optional<ScheduleDto> addMember(String id);
+    boolean delete(String id);
     List<ScheduleDto> findAll();
 }

@@ -1,9 +1,8 @@
 package calendar.calendar_service;
 
-import calendar.calendar_service.repository.JdbcTemplateMemberRepository;
-import calendar.calendar_service.repository.MemberRepository;
-import calendar.calendar_service.repository.MemoryMemberRepository;
+import calendar.calendar_service.repository.*;
 import calendar.calendar_service.service.MemberService;
+import calendar.calendar_service.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,5 +24,15 @@ public class SpringConfig {
     @Bean
     public MemberRepository memberRepository(){
         return new JdbcTemplateMemberRepository(dataSource);
+    }
+
+
+    @Bean
+    public ScheduleService scheduleService(){
+        return new ScheduleService(scheduleInterface());
+    }
+    @Bean
+    public ScheduleInterface scheduleInterface(){
+        return new ScheduleDao(dataSource);
     }
 }
