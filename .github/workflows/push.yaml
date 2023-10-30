@@ -3,7 +3,7 @@ name: "Workflow : Push"
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:  # workflow_dispatch 호출
 
 jobs:
