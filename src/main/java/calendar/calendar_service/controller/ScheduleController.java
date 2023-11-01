@@ -1,19 +1,26 @@
 package calendar.calendar_service.controller;
 
+import calendar.calendar_service.domain.Schedule;
+import calendar.calendar_service.service.ScheduleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+
 @RestController
 public class ScheduleController {
 
-    // Assuming this method handles fetching data based on month and year
-    @GetMapping("/")
-    public String getEventsByMonthAndYear(@RequestParam(name = "month") String month,
-                                          @RequestParam(name = "year") String year) {
+    private final ScheduleService scheduleService;
 
-        System.out.println(month+"and"+year);
-        // Add logic here to process the month and year, fetch data, etc.
-        return  month + "/" + year;
+    public ScheduleController(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
+    }
+
+    @GetMapping("/")
+    public List<Schedule> getSchedules(@RequestParam int month, @RequestParam int year) {
+        System.out.println(month+"월"+year+"년");
+        return scheduleService.findAllSchedules();
     }
 }

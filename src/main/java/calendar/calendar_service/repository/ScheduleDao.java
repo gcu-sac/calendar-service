@@ -1,78 +1,53 @@
 package calendar.calendar_service.repository;
 
-import calendar.calendar_service.domain.ScheduleDto;
+import calendar.calendar_service.domain.Schedule;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-
-import javax.sql.DataSource;
+import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class ScheduleDao implements ScheduleInterface {
-
+@Repository
+public class ScheduleDao {
     private final JdbcTemplate jdbcTemplate;
 
-    public ScheduleDao(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ScheduleDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-
-    @Override
-    public ScheduleDto save(ScheduleDto scheduleDto) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("Schedule").usingGeneratedKeyColumns("ScheduleID");
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ScheduleName", scheduleDto.scheduleName());
-        parameters.put("ScheduleDesc", scheduleDto.scheduleDesc());
-        parameters.put("StartTime", scheduleDto.StartTime());
-        parameters.put("EndTime", scheduleDto.EndTime());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        scheduleDto.setScheduleID(key.toString());
-        return scheduleDto;
+    public List<Schedule> findAll() {
+        String sql = "SELECT * FROM schedule";
+        return jdbcTemplate.query(sql, new ScheduleRowMapper());
     }
 
-    @Override
-    public Optional<ScheduleDto> addMember(String id) {
-        return Optional.empty();
+    public List<Schedule> findSchedulesByMonthAndYear(int month, int year) {
+
+        //이부분 쿼리문 다시
+        //이부분 쿼리문 다시
+        //이부분 쿼리문 다시
+
+        String sql = "SELECT * FROM Schedule WHERE MONTH(StartTime) = ? AND YEAR(StartTime) = ?";
+        return jdbcTemplate.query(sql, new ScheduleRowMapper(), month, year);
     }
 
-    @Override
-    public boolean delete(String id) {
-        String sql = "DELETE FROM Schedule WHERE id = ?";
-        Object[] args = new Object[] {id};
+    private static class ScheduleRowMapper implements RowMapper<Schedule> {
+        @Override
+        public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Schedule schedule = new Schedule();
 
-        return jdbcTemplate.update(sql, args) == 1;
-    }
+            schedule.setScheduleId(rs.getInt("ScheduleId"));
+            schedule.setScheduleName(rs.getString("ScheduleName"));
+            schedule.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
+            schedule.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
+            schedule.setSchedulDesc(rs.getString("SchedulDesc"));
+            schedule.setGroupId(rs.getString("GroupID"));
+            //scheduleEntity.setScheduleColor(rs.getString("ScheduleColor"));
 
-    @Override
-    public List<ScheduleDto> findAll() {
-        return jdbcTemplate.query("select * from Schedule", scheduleDtoRowMapper());
-    }
-
-    private RowMapper<ScheduleDto> scheduleDtoRowMapper() {
-        return new RowMapper<ScheduleDto>() {
-            @Override
-            public ScheduleDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                ScheduleDto scheduleDto = new ScheduleDto();
-                scheduleDto.setScheduleID(rs.getString("ScheduleID"));
-                scheduleDto.setScheduleName(rs.getString("ScheduleName"));
-                scheduleDto.setScheduleID(rs.getString("ScheduleDesc"));
-                scheduleDto.setScheduleName(rs.getString("ScheduleName"));
-                scheduleDto.setScheduleID(rs.getString("StartTime"));
-                scheduleDto.setScheduleName(rs.getString("EndTime"));
-                //scheduleDto.setScheduleName(rs.getString("GroupID"));
-                //scheduleDto.setScheduleName(rs.getString("ScheduleColor"));
-
-                return null;
-            }
-        };
+            return schedule;
+        }
     }
 }
+
+
+
