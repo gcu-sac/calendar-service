@@ -22,11 +22,6 @@ public class ScheduleDao {
     }
 
     public List<Schedule> findSchedulesByMonthAndYear(int month, int year) {
-
-        //이부분 쿼리문 다시
-        //이부분 쿼리문 다시
-        //이부분 쿼리문 다시
-
         String sql = "SELECT * FROM Schedule WHERE MONTH(StartTime) = ? AND YEAR(StartTime) = ?";
         return jdbcTemplate.query(sql, new ScheduleRowMapper(), month, year);
     }

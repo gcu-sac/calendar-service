@@ -21,6 +21,6 @@ public class ScheduleController {
     @GetMapping("/")
     public List<Schedule> getSchedules(@RequestParam int month, @RequestParam int year) {
         System.out.println(month+"월"+year+"년");
-        return scheduleService.findAllSchedules();
+        return scheduleService.findSchedulesByMonthAndYear(month, year);
     }
 }
