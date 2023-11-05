@@ -2,6 +2,7 @@ package calendar.calendar_service.service;
 
 import calendar.calendar_service.domain.Schedule;
 import calendar.calendar_service.repository.ScheduleDao;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,7 +19,10 @@ public class ScheduleService {
         return scheduleDao.findAll();
     }
 
-    public List<Schedule> findSchedulesByMonthAndYear(int month, int year) {
+    public List<Schedule> findSchedulesByMonthAndYear(String month, String year) {
         return scheduleDao.findSchedulesByMonthAndYear(month, year);
+    }
+    public String newSchedule(Schedule schedule) {
+        return scheduleDao.newSchedule(schedule);
     }
 }
