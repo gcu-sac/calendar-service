@@ -45,10 +45,31 @@ public class ScheduleDao {
                     Timestamp.valueOf(schedule.startTime()),
                     Timestamp.valueOf(schedule.endTime()),
                     schedule.schedulDesc(),
-                    schedule.groupId());
+                    schedule.groupID());
 
             if (result > 0) {
                 return "Schedule added successfully with id: " + newId;
+            } else {
+                return "Failed to add schedule.";
+            }
+        } catch (DataAccessException e) {
+            // Log exception details
+            return "Error accessing data: " + e.getMessage();
+        }
+    }
+    public String modifySchedule(Schedule schedule) {
+        String sql = "UPDATE schedule SET ScheduleName = ?, StartTime = ?, EndTime = ?, ScheduleDesc = ?, GroupID = ? WHERE ScheduleID = ?";
+        try {
+            int result = jdbcTemplate.update(sql,
+                    schedule.scheduleName(),
+                    Timestamp.valueOf(schedule.startTime()),
+                    Timestamp.valueOf(schedule.endTime()),
+                    schedule.schedulDesc(),
+                    schedule.groupID(),
+                    schedule.scheduleID());
+
+            if (result > 0) {
+                return "Schedule modified successfully with id: " + schedule.scheduleID();
             } else {
                 return "Failed to add schedule.";
             }
@@ -63,12 +84,12 @@ public class ScheduleDao {
         public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
             Schedule schedule = new Schedule();
 
-            schedule.setScheduleId(rs.getInt("ScheduleId"));
+            schedule.setScheduleID(rs.getInt("ScheduleId"));
             schedule.setScheduleName(rs.getString("ScheduleName"));
             schedule.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
             schedule.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
             schedule.setSchedulDesc(rs.getString("SchedulDesc"));
-            schedule.setGroupId(rs.getString("GroupID"));
+            schedule.setGroupID(rs.getString("GroupID"));
             //scheduleEntity.setScheduleColor(rs.getString("ScheduleColor"));
 
             return schedule;

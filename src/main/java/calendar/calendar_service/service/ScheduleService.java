@@ -25,4 +25,7 @@ public class ScheduleService {
     public String newSchedule(Schedule schedule) {
         return scheduleDao.newSchedule(schedule);
     }
+    public String modifySchedule(Schedule schedule) {
+        return scheduleDao.modifySchedule(schedule);
+    }
 }

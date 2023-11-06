@@ -27,8 +27,14 @@ public class ScheduleController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<String> addNewSchedule(@RequestBody Schedule schedule) {
+    public ResponseEntity<String> newewSchedule(@RequestBody Schedule schedule) {
         String result = scheduleService.newSchedule(schedule);
+        return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
+    }
+
+    @PostMapping("/modify")
+    public ResponseEntity<String> modifySchedule(@RequestBody Schedule schedule) {
+        String result = scheduleService.modifySchedule(schedule);
         return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
     }
 }

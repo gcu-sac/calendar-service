@@ -3,20 +3,20 @@ package calendar.calendar_service.domain;
 import java.time.LocalDateTime;
 
 public class Schedule {
-    public int scheduleId;
+    public int scheduleID;
     public String scheduleName;
     public LocalDateTime startTime;
     public LocalDateTime endTime;
     public String schedulDesc;
-    public String groupId;
+    public String groupID;
     //private String scheduleColor;
 
-    public int scheduleId() {
-        return scheduleId;
+    public int scheduleID() {
+        return scheduleID;
     }
 
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setScheduleID(int scheduleID) {
+        this.scheduleID = scheduleID;
     }
 
     public String scheduleName() {
@@ -51,12 +51,12 @@ public class Schedule {
         this.schedulDesc = schedulDesc;
     }
 
-    public String groupId() {
-        return groupId;
+    public String groupID() {
+        return groupID;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setGroupID(String groupId) {
+        this.groupID = groupID;
     }
 /*
     public String scheduleColor() {
