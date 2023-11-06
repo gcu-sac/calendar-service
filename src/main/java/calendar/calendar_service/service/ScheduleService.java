@@ -28,4 +28,7 @@ public class ScheduleService {
     public String modifySchedule(Schedule schedule) {
         return scheduleDao.modifySchedule(schedule);
     }
+    public String deleteSchedule(int scheduleID) {
+        return scheduleDao.deleteSchedule(scheduleID);
+    }
 }

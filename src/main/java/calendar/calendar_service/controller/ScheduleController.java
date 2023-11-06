@@ -32,9 +32,14 @@ public class ScheduleController {
         return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
     }
 
-    @PostMapping("/modify")
+    @PutMapping("/modify")
     public ResponseEntity<String> modifySchedule(@RequestBody Schedule schedule) {
         String result = scheduleService.modifySchedule(schedule);
+        return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
+    }
+    @DeleteMapping("/delete/{scheduleID}")
+    public ResponseEntity<String> deleteSchedule(@PathVariable int scheduleID) {
+        String result = scheduleService.deleteSchedule(scheduleID);
         return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
     }
 }

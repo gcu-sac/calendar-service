@@ -78,7 +78,22 @@ public class ScheduleDao {
             return "Error accessing data: " + e.getMessage();
         }
     }
+    public String deleteSchedule(int scheduleID) {
+        String sql = "DELETE FROM schedule WHERE ScheduleID = ?";
 
+        try {
+            int result = jdbcTemplate.update(sql, scheduleID);
+
+            if (result > 0) {
+                return "Schedule deleted successfully with id: " + scheduleID;
+            } else {
+                return "No schedule found with id: " + scheduleID;
+            }
+        } catch (DataAccessException e) {
+            // Log exception details
+            return "Error accessing data: " + e.getMessage();
+        }
+    }
     private static class ScheduleRowMapper implements RowMapper<Schedule> {
         @Override
         public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
