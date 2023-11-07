@@ -1,5 +1,7 @@
 package calendar.calendar_service.repository;
 import calendar.calendar_service.domain.Schedule;
+import calendar.calendar_service.domain.ScheduleResponseDTO;
+import calendar.calendar_service.domain.SendSchedule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
@@ -20,35 +22,35 @@ public class ScheduleDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Schedule> findAll() {
+    public List<SendSchedule> findAll() {
         String sql = "SELECT * FROM schedule";
         return jdbcTemplate.query(sql, new ScheduleRowMapper());
     }
 
-    public List<Schedule> findSchedulesByMonthAndYear(String month, String year) {
+    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year) {
         String sql = "SELECT * FROM Schedule WHERE MONTH(StartTime) = ? AND YEAR(StartTime) = ?";
         return jdbcTemplate.query(sql, new ScheduleRowMapper(), month, year);
     }
+    /*
     private Long getMaxId() {
         String sql = "SELECT MAX(ScheduleID) FROM schedule";
         Long maxId = jdbcTemplate.queryForObject(sql, Long.class);
         return (maxId == null) ? 0 : maxId;
     }
+    */
     public String newSchedule(Schedule schedule) {
-        Long newId = getMaxId() + 1; // Get the next id
-        //System.out.println(newId);
-        String sql = "INSERT INTO schedule (ScheduleID, ScheduleName, StartTime, EndTime, ScheduleDesc, GroupID) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (ScheduleID, USERID, ScheduleName, StartTime, EndTime, ScheduleDesc) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             int result = jdbcTemplate.update(sql,
-                    newId,
+                    null,
+                    schedule.userID(),
                     schedule.scheduleName(),
-                    Timestamp.valueOf(schedule.startTime()),
-                    Timestamp.valueOf(schedule.endTime()),
-                    schedule.schedulDesc(),
-                    schedule.groupID());
+                    Timestamp.valueOf(schedule.convertStatTime()),
+                    Timestamp.valueOf(schedule.convertStatTime()),
+                    schedule.scheduleDesc());
 
             if (result > 0) {
-                return "Schedule added successfully with id: " + newId;
+                return "Schedule added successfully with id: " + schedule.userID();
             } else {
                 return "Failed to add schedule.";
             }
@@ -58,14 +60,15 @@ public class ScheduleDao {
         }
     }
     public String modifySchedule(Schedule schedule) {
-        String sql = "UPDATE schedule SET ScheduleName = ?, StartTime = ?, EndTime = ?, ScheduleDesc = ?, GroupID = ? WHERE ScheduleID = ?";
+
+        String sql = "UPDATE schedule SET UserID =?, ScheduleName = ?, StartTime = ?, EndTime = ?, ScheduleDesc = ? WHERE ScheduleID = ?";
         try {
             int result = jdbcTemplate.update(sql,
+                    schedule.userID(),
                     schedule.scheduleName(),
-                    Timestamp.valueOf(schedule.startTime()),
-                    Timestamp.valueOf(schedule.endTime()),
-                    schedule.schedulDesc(),
-                    schedule.groupID(),
+                    Timestamp.valueOf(schedule.convertStatTime()),
+                    Timestamp.valueOf(schedule.convertEndTime()),
+                    schedule.scheduleDesc(),
                     schedule.scheduleID());
 
             if (result > 0) {
@@ -94,20 +97,29 @@ public class ScheduleDao {
             return "Error accessing data: " + e.getMessage();
         }
     }
-    private static class ScheduleRowMapper implements RowMapper<Schedule> {
+    private static class ScheduleRowMapper implements RowMapper<SendSchedule> {
         @Override
-        public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Schedule schedule = new Schedule();
+        public SendSchedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+            ScheduleResponseDTO DBschedule = new ScheduleResponseDTO();
+            DBschedule.setScheduleID(rs.getInt("ScheduleId"));
+            DBschedule.setUserID(rs.getString("UserID"));
+            DBschedule.setScheduleName(rs.getString("ScheduleName"));
+            DBschedule.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
+            DBschedule.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
+            DBschedule.setScheduleDesc(rs.getString("ScheduleDesc"));
+            DBschedule.setTime(null);
 
-            schedule.setScheduleID(rs.getInt("ScheduleId"));
-            schedule.setScheduleName(rs.getString("ScheduleName"));
-            schedule.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
-            schedule.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
-            schedule.setSchedulDesc(rs.getString("SchedulDesc"));
-            schedule.setGroupID(rs.getString("GroupID"));
-            //scheduleEntity.setScheduleColor(rs.getString("ScheduleColor"));
 
-            return schedule;
+            SendSchedule Fschedule = new SendSchedule();
+            Fschedule.setScheduleID(DBschedule.scheduleID());
+            Fschedule.setUserID(DBschedule.userID());
+            Fschedule.setScheduleName(DBschedule.scheduleName());
+            Fschedule.setStartTime(DBschedule.sendtStatTime(DBschedule.startTime()));
+            Fschedule.setEndTime(DBschedule.sendEndTime(DBschedule.endTime()));
+            Fschedule.setScheduleDesc(DBschedule.scheduleDesc());
+
+
+            return Fschedule;
         }
     }
 }

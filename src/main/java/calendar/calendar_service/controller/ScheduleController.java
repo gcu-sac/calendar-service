@@ -1,6 +1,7 @@
 package calendar.calendar_service.controller;
 
 import calendar.calendar_service.domain.Schedule;
+import calendar.calendar_service.domain.SendSchedule;
 import calendar.calendar_service.service.ScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/")
-    public List<Schedule> Schedules(@RequestParam String month, @RequestParam String year) {
+    public List<SendSchedule> Schedules(@RequestParam String month, @RequestParam String year) {
         System.out.println(month + "month" + year + "year");
         return scheduleService.findSchedulesByMonthAndYear(month, year);
     }

@@ -1,15 +1,15 @@
 package calendar.calendar_service.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Schedule {
     public int scheduleID;
+    public String userID;
     public String scheduleName;
-    public LocalDateTime startTime;
-    public LocalDateTime endTime;
-    public String schedulDesc;
-    public String groupID;
-    //private String scheduleColor;
+    public String scheduleDesc;
+    public ScheduleTime time;
+
 
     public int scheduleID() {
         return scheduleID;
@@ -27,45 +27,35 @@ public class Schedule {
         this.scheduleName = scheduleName;
     }
 
-    public LocalDateTime startTime() {
-        return startTime;
+    public String scheduleDesc() {
+        return scheduleDesc;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setScheduleDesc(String scheduleDesc) {
+        this.scheduleDesc = scheduleDesc;
     }
 
-    public LocalDateTime endTime() {
-        return endTime;
+    public String userID() {
+        return userID;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public String schedulDesc() {
-        return schedulDesc;
+    public LocalDateTime convertStatTime(){
+        //ex) "2021-11-05 13:47:13.248";
+        String startTime = time.StartYear+"-"+time.StartMonth+"-"+time.StartDay+" "+time.StartHour+":"+time.StartMin+":00.000";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        LocalDateTime dateTime = LocalDateTime.parse(startTime, formatter);
+        return dateTime;
     }
 
-    public void setSchedulDesc(String schedulDesc) {
-        this.schedulDesc = schedulDesc;
+    public LocalDateTime convertEndTime(){
+        //ex) "2021-11-05 13:47:13.248";
+        String endTime = time.EndYear+"-"+time.EndMonth+"-"+time.EndDay+" "+time.EndHour+":"+time.EndMin+":00.000";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        LocalDateTime dateTime = LocalDateTime.parse(endTime, formatter);
+        return dateTime;
     }
-
-    public String groupID() {
-        return groupID;
-    }
-
-    public void setGroupID(String groupId) {
-        this.groupID = groupID;
-    }
-/*
-    public String scheduleColor() {
-        return scheduleColor;
-    }
-
-    public void setScheduleColor(String scheduleColor) {
-        this.scheduleColor = scheduleColor;
-    }
-
- */
 }

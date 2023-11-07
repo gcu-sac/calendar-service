@@ -1,6 +1,7 @@
 package calendar.calendar_service.service;
 
 import calendar.calendar_service.domain.Schedule;
+import calendar.calendar_service.domain.SendSchedule;
 import calendar.calendar_service.repository.ScheduleDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ public class ScheduleService {
         this.scheduleDao = scheduleDao;
     }
 
-    public List<Schedule> findAllSchedules() {
+    public List<SendSchedule> findAllSchedules() {
         return scheduleDao.findAll();
     }
 
-    public List<Schedule> findSchedulesByMonthAndYear(String month, String year) {
+    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year) {
         return scheduleDao.findSchedulesByMonthAndYear(month, year);
     }
     public String newSchedule(Schedule schedule) {
