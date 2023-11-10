@@ -77,7 +77,7 @@ public class ScheduleResponseDTO {
         time.StartHour = String.format("%02d", StartDateTime.getHour());
         time.StartMin= String.format("%02d", StartDateTime.getMinute());
         //ex) "2021-11-05 13:47:13.248";
-        String Date = time.StartYear+"-"+time.StartMonth+"-"+time.StartDay+" "+time.StartHour+":"+time.StartMin;
+        String Date = time.StartYear+"-"+time.StartMonth+"-"+time.StartDay+"T"+time.StartHour+":"+time.StartMin+":00";
         return Date;
     }
 
@@ -89,7 +89,7 @@ public class ScheduleResponseDTO {
         time.EndMin= String.format("%02d", EndDateTime.getMinute());
 
         //ex) "2021-11-05 13:47:13.248";
-        String Date = time.EndYear+"-"+time.EndMonth+"-"+time.EndDay+" "+time.EndHour+":"+time.EndMin;
+        String Date = time.EndYear+"-"+time.EndMonth+"-"+time.EndDay+"T"+time.EndHour+":"+time.EndMin+":00";
         return Date;
     }
 }
