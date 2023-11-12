@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000, https://sac.prod.cluster.yanychoi.com")
+@CrossOrigin(origins = "*")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
