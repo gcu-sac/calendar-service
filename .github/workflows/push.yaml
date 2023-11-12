@@ -33,10 +33,14 @@ jobs:
       - name: Build with Jib
         run: |
           ./gradlew jib
+
+      - name: get short SHA
+        id: var
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       
       - name: Notify Deployment
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: '`calendar` deployed with version `${{ github.sha }} and `latest``'
+          args: '`calendar` deployed with version `${{ steps.var.outputs.sha_short }}` and `latest`'
