@@ -2,8 +2,6 @@ package calendar.calendar_service.repository;
 import calendar.calendar_service.domain.Schedule;
 import calendar.calendar_service.domain.ScheduleResponseDTO;
 import calendar.calendar_service.domain.SendSchedule;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.time.LocalDateTime;
 
 @Repository
 public class ScheduleDao {
@@ -23,7 +20,7 @@ public class ScheduleDao {
     }
 
     public List<SendSchedule> findAll() {
-        String sql = "SELECT * FROM schedule";
+        String sql = "SELECT * FROM Schedule";
         return jdbcTemplate.query(sql, new ScheduleRowMapper());
     }
 
@@ -39,7 +36,7 @@ public class ScheduleDao {
     }
     */
     public String newSchedule(Schedule schedule) {
-        String sql = "INSERT INTO schedule (ScheduleID, USERID, ScheduleName, StartTime, EndTime, ScheduleDesc) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Schedule (ScheduleID, UserID, ScheduleName, StartTime, EndTime, ScheduleDesc) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             int result = jdbcTemplate.update(sql,
                     null,
@@ -61,7 +58,7 @@ public class ScheduleDao {
     }
     public String modifySchedule(Schedule schedule) {
 
-        String sql = "UPDATE schedule SET UserID =?, ScheduleName = ?, StartTime = ?, EndTime = ?, ScheduleDesc = ? WHERE ScheduleID = ?";
+        String sql = "UPDATE Schedule SET UserID =?, ScheduleName = ?, StartTime = ?, EndTime = ?, ScheduleDesc = ? WHERE ScheduleID = ?";
         try {
             int result = jdbcTemplate.update(sql,
                     schedule.userID(),
@@ -82,7 +79,7 @@ public class ScheduleDao {
         }
     }
     public String deleteSchedule(int scheduleID) {
-        String sql = "DELETE FROM schedule WHERE ScheduleID = ?";
+        String sql = "DELETE FROM Schedule WHERE ScheduleID = ?";
 
         try {
             int result = jdbcTemplate.update(sql, scheduleID);
