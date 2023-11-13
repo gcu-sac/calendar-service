@@ -17,8 +17,8 @@ public class ScheduleService {
         return scheduleDao.findAll();
     }
 
-    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year) {
-        return scheduleDao.findSchedulesByMonthAndYear(month, year);
+    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year, String userId) {
+        return scheduleDao.findSchedulesByMonthAndYear(month, year, userId);
     }
     public String newSchedule(Schedule schedule) {
         return scheduleDao.newSchedule(schedule);

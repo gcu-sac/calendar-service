@@ -24,9 +24,9 @@ public class ScheduleDao {
         return jdbcTemplate.query(sql, new ScheduleRowMapper());
     }
 
-    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year) {
-        String sql = "SELECT * FROM Schedule WHERE MONTH(StartTime) = ? AND YEAR(StartTime) = ?";
-        return jdbcTemplate.query(sql, new ScheduleRowMapper(), month, year);
+    public List<SendSchedule> findSchedulesByMonthAndYear(String month, String year, String userId) {
+        String sql = "SELECT * FROM Schedule WHERE MONTH(StartTime) = ? AND YEAR(StartTime) = ? AND UserID =?";
+        return jdbcTemplate.query(sql, new ScheduleRowMapper(), month, year, userId);
     }
     /*
     private Long getMaxId() {

@@ -4,6 +4,7 @@ import calendar.calendar_service.domain.Schedule;
 import calendar.calendar_service.domain.SendSchedule;
 import calendar.calendar_service.service.AuthService;
 import calendar.calendar_service.service.ScheduleService;
+import io.swagger.v3.oas.annotations.headers.Header;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,12 @@ public class ScheduleController {
     private final AuthService authService;
 
     @GetMapping("/event")
-    public List<SendSchedule> Schedules(@CookieValue String jwtAuthToken, @RequestParam String month, @RequestParam String year) {
+    public List<SendSchedule> Schedules(@CookieValue String jwtAuthToken,@RequestHeader("userId") String userId, @RequestParam String month, @RequestParam String year) {
         System.out.println(month + "month" + year + "year");
         if (!authService.authenticate(jwtAuthToken)) {
             throw new RuntimeException("Authentication failed");
         }
-        return scheduleService.findSchedulesByMonthAndYear(month, year);
+        return scheduleService.findSchedulesByMonthAndYear(month, year, userId);
     }
 
     @PostMapping("/event")
