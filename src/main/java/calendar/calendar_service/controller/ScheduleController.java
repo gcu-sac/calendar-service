@@ -54,4 +54,9 @@ public class ScheduleController {
         String result = scheduleService.deleteSchedule(scheduleID);
         return ResponseEntity.ok(result); // You might want to adjust the response status based on the result
     }
+
+    @GetMapping("/event/test")
+    public String Schedules() {
+        return "test";
+    }
 }
