@@ -19,7 +19,7 @@ public class AuthService {
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
-                "https://sac.prod.cluster.yanychoi.com/api/auth/user/authenticate",
+                "http://auth-service.auth-service.svc.cluster.local:8080/api/auth/user/authenticate",
                 HttpMethod.GET,
                 entity,
                 String.class
